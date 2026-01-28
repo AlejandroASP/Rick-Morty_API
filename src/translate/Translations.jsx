@@ -18,7 +18,9 @@ const translations = {
         episodes: 'Episodios',
         speciesLabel: 'Especie',
         back: 'Volver al inicio',
-        characters: 'Personajes'
+        characters: 'Personajes',
+        previous: 'Anterior',
+        next: 'Siguiente'
     },
     en: {
         status: {
@@ -39,7 +41,9 @@ const translations = {
         episodes: 'Episodes',
         speciesLabel: 'Species',
         back: 'Back to home',
-        characters: 'Characters'
+        characters: 'Characters',
+        previous: 'Previous',
+        next: 'Next'
     }
 }
 

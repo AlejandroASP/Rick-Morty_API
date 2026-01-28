@@ -1,54 +1,45 @@
-import './App.css'
 import imageRickMorty from './img/rick-morty.png'
 import { Characters } from './components/Characters'
-import { Filters } from './components/Filters'
 import { useCharacters } from './hooks/useCharacters'
 
 function App() {
   const {
-    characters,
-    loading,
-    nextPage,
-    loadCharacters,
-    changeSpecies,
-    species
+    characters, loading, page, totalPages,
+    changePage, changeSpecies, species, resetApp, startSearch
   } = useCharacters()
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1 className="title">Rick & Morty</h1>
+    <div className="App container-fluid p-0 bg-dark d-flex flex-column min-vh-100">
+      <header className="App-header py-5 text-center w-100">
+        <h1 className="display-4 fw-bold text-white mb-4" style={{ fontFamily: 'roboto' }}>
+          Rick & Morty
+        </h1>
 
         {characters.length > 0 ? (
-          <>
-            <Characters
-              characters={characters}
-              species={species}
-              onSpeciesChange={changeSpecies}
-            />
-
-            {nextPage && (
-              <button
-                onClick={() => loadCharacters(nextPage)}
-                className="btn-search"
-                disabled={loading}
-              >
-                {loading ? 'Cargando...' : 'Cargar más'}
-              </button>
-            )}
-          </>
+          <Characters
+            characters={characters} species={species} onSpeciesChange={changeSpecies}
+            page={page} totalPages={totalPages} onPageChange={changePage}
+            loading={loading} onResetApp={resetApp}
+          />
         ) : (
           !loading && (
-            <>
-              <img src={imageRickMorty} alt="Rick & Morty" className="img-home" />
-              <button onClick={() => loadCharacters()} className="btn-search">
+            <div className="container d-flex flex-column align-items-center">
+              <img 
+                src={imageRickMorty} 
+                alt="Rick & Morty" 
+                className="img-fluid p-5" 
+                style={{ maxWidth: '700px' }} 
+              />
+              <button 
+                onClick={startSearch} 
+                className="btn btn-success btn-lg shadow rounded-pill px-5"
+              >
                 Buscar Personajes
               </button>
-            </>
+            </div>
           )
         )}
-
-        {loading && <p>Cargando...</p>}
+        {loading && <p className="text-white lead">Cargando...</p>}
       </header>
     </div>
   )

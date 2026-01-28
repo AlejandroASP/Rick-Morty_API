@@ -1,21 +1,16 @@
 const SPECIES = [
-  { label: 'Todas', value: '' },
-  { label: 'Humanos', value: 'Human' },
-  { label: 'Aliens', value: 'Alien' },
-  { label: 'Robots', value: 'Robot' },
-  { label: 'Humanoid', value: 'Humanoid' },
-  { label: 'Desconocido', value: 'unknown' }
+  '', 'Human', 'Alien', 'Robot', 'Humanoid', 'unknown'
 ]
 
-export const Filters = ({ species, onChange }) => (
-  <div className="filters">
-    {SPECIES.map(sp => (
+export const Filters = ({ species, onChange, language, t }) => (
+  <div className="d-flex flex-wrap justify-content-center gap-2 mb-5">
+    {SPECIES.map(value => (
       <button
-        key={sp.value}
-        className={`btn-filter ${species === sp.value ? 'active' : ''}`}
-        onClick={() => onChange(sp.value)}
+        key={value || 'all'}
+        className={`btn fw-medium shadow-sm ${species === value ? 'btn-light text-success' : 'btn-success'}`}
+        onClick={() => onChange(value)}
       >
-        {sp.label}
+        {value === '' ? (language === 'es' ? 'Todas' : 'All') : t.species[value]}
       </button>
     ))}
   </div>

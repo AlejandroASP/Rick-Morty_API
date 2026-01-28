@@ -1,47 +1,74 @@
-import { useState } from 'react'
+import { useState, useEffect } from "react";
 
 export const useCharacters = () => {
-  const [characters, setCharacters] = useState([])
-  const [nextPage, setNextPage] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [species, setSpecies] = useState('')
+  const [characters, setCharacters] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [species, setSpecies] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
 
-  const loadCharacters = async (url = null, speciesValue = species) => {
-    setLoading(true)
-    try {
-      const base = 'https://rickandmortyapi.com/api/character'
-      const finalUrl = url
-        ? url
-        : speciesValue
-          ? `${base}?species=${speciesValue}`
-          : base
+  useEffect(() => {
+    if (!isSearching) return;
 
-      const res = await fetch(finalUrl)
-      const data = await res.json()
+    const fetchCharacters = async () => {
+      setLoading(true);
+      try {
+        let url = `https://rickandmortyapi.com/api/character/?page=${page}`;
+        if (species) {
+          url += `&species=${species}`;
+        }
 
-      setCharacters(prev => [...prev, ...data.results])
-      setNextPage(data.info.next)
-    } catch {
-      setCharacters([])
-      setNextPage(null)
-    } finally {
-      setLoading(false)
-    }
-  }
+        const response = await fetch(url);
+        const data = await response.json();
 
-  const changeSpecies = (value) => {
-    setSpecies(value)
-    setCharacters([])
-    setNextPage(null)
-    loadCharacters(null, value)
-  }
+        setCharacters(data.results || []);
+        setTotalPages(data.info?.pages || 0);
+      } catch (error) {
+        console.error("Error fetching characters:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCharacters();
+  }, [page, species, isSearching]);
+
+  const changeSpecies = (newSpecies) => {
+    setSpecies(newSpecies);
+    setPage(1);
+  };
+
+  const changePage = (newPage) => {
+    setPage(newPage);
+    window.scrollTo(0, 0);
+  };
+
+  
+  const startSearch = () => {
+    setIsSearching(true);
+    setPage(1);
+    setSpecies("");
+    setCharacters([]);
+  };
+
+  const resetApp = () => {
+    setIsSearching(false);
+    setCharacters([]);
+    setPage(1);
+    setSpecies("");
+    setLoading(false);
+  };
 
   return {
     characters,
-    nextPage,
     loading,
+    page,
+    totalPages,
+    changePage,
+    changeSpecies,
     species,
-    loadCharacters,
-    changeSpecies
-  }
-}
+    resetApp,
+    startSearch
+  };
+};
