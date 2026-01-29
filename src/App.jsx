@@ -23,20 +23,22 @@ function App() {
           />
         ) : (
           !loading && (
-            <div className="container d-flex flex-column align-items-center">
-              <img 
-                src={imageRickMorty} 
-                alt="Rick & Morty" 
-                className="img-fluid p-5" 
-                style={{ maxWidth: '700px' }} 
-              />
-              <button 
-                onClick={startSearch} 
-                className="btn btn-success btn-lg shadow rounded-pill px-5"
-              >
-                Buscar Personajes
-              </button>
+            <div className="container">
+              <div className="row justify-content-center">
+                <div className="col-12 col-md-8 col-lg-6 text-center">
+                  <img
+                    src={imageRickMorty}
+                    className="img-fluid mb-4
+                    mt-5"
+                    alt="Rick & Morty"
+                  />
+                  <button className="btn btn-success btn-lg rounded-pill px-5 mt-2">
+                    Buscar Personajes
+                  </button>
+                </div>
+              </div>
             </div>
+
           )
         )}
         {loading && <p className="text-white lead">Cargando...</p>}
