@@ -28,11 +28,13 @@ function App() {
                 <div className="col-12 col-md-8 col-lg-6 text-center">
                   <img
                     src={imageRickMorty}
-                    className="img-fluid mb-4
-                    mt-5"
+                    className="img-fluid mb-4"
                     alt="Rick & Morty"
                   />
-                  <button className="btn btn-success btn-lg rounded-pill px-5 mt-2">
+                  <button
+                    onClick={startSearch}
+                    className="btn btn-success btn-lg shadow rounded-pill px-5"
+                  >
                     Buscar Personajes
                   </button>
                 </div>
